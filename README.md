@@ -1,55 +1,84 @@
-**ABSTRACT**
+# Predictive Maintenance Analysis for Remaining Useful Life (RUL) Prediction
+
+This project implements a predictive maintenance model to estimate the Remaining Useful Life (RUL) of turbofan engines using machine learning techniques. The analysis is based on the **NASA Turbofan Engine Degradation Simulation Dataset** and compares various algorithms, including Linear Regression, Decision Trees, Random Forest, XGBoost, and Long Short-Term Memory (LSTM) neural networks, for effective RUL prediction.
+
+## Project Overview
+
+Predictive maintenance uses data analytics to forecast equipment failures, helping to schedule maintenance proactively and avoid unexpected downtime. This project focuses on accurate RUL prediction to ensure timely maintenance, minimize costs, and improve asset performance.
+
+### Key Objectives
+- Predict the RUL of turbofan engines under varying conditions.
+- Evaluate and compare models, including Linear Regression, Random Forest, XGBoost, and SVR, for RUL prediction.
+- Employ data preprocessing techniques, such as smoothing and cross-validation, to enhance model accuracy.
+
+### Uniqueness of the Project
+This project explores a diverse set of models to determine the optimal approach for predicting RUL, with a practical focus on minimizing downtime and maintenance costs. By combining time-series and multivariate analysis with advanced preprocessing methods, the project aims to achieve robust predictions applicable to real-world scenarios.
+
+## Dataset
+
+### Description
+
+The NASA Turbofan Engine Degradation Simulation Dataset simulates the degradation of turbofan engines under various operating conditions, capturing sensor data and operational settings over time. The dataset includes:
+- **21 sensor measurements** reflecting engine condition.
+- **3 operational settings**: altitude, throttle resolver angle (TRA), and Mach number.
+- **Data from 5 key engine components**: Fan, LPC, HPC, HPT, and LPT (High-Pressure Compressor, High-Pressure Turbine, and Low-Pressure Turbine).
+
+The dataset is organized into four subsets (FD001–FD004), each representing different experimental scenarios:
+
+| Dataset | Train Trajectories | Test Trajectories | Conditions | Fault Modes |
+| ------- | ------------------ | ----------------- | ---------- | ----------- |
+| FD001   | 100                | 100               | 1 (Sea Level) | 1 (HPC Degradation) |
+| FD002   | 260                | 259               | 6              | 1 (HPC Degradation) |
+| FD003   | 100                | 100               | 1 (Sea Level) | 2 (HPC and Fan Degradation) |
+| FD004   | 248                | 249               | 6              | 2 (HPC and Fan Degradation) |
+
+Each dataset contains multivariate time series from individual engines. Each engine operates normally at the beginning, and degradation leads to failure over time.
+
+### Columns in the Dataset
+1. `unit number`: Unique engine identifier
+2. `time, in cycles`: Operational cycle count
+3. `operational setting 1`
+4. `operational setting 2`
+5. `operational setting 3`
+6. `sensor measurement 1` to `sensor measurement 26`: Measurements of engine parameters
+
+**Reference**: A. Saxena, K. Goebel, D. Simon, and N. Eklund, "Damage Propagation Modeling for Aircraft Engine Run-to-Failure Simulation," in Proceedings of the 1st International Conference on Prognostics and Health Management (PHM08), Denver CO, Oct 2008.
+
+## Methodology
+
+### Data Preprocessing
+- **Smoothing Techniques**: Applied to reduce noise in sensor data.
+- **Cross-Validation**: Implemented for reliable model performance estimation.
+
+### Models Used
+1. **Linear Regression**
+2. **RandomizedSearchCV and ElasticNet with reduced cross-validation**
+3. **Random Forest**
+4. **XGBoost**
+
+### Model Evaluation
+Models were evaluated based on:
+- **Root Mean Squared Error (RMSE)**
+- **R-squared (R²)**
+
+### Findings
+Ensemble methods, particularly **Random Forest** and **XGBoost**, outperformed other models in predicting RUL accurately. These results highlight the value of machine learning in predictive maintenance and suggest future improvements in model robustness and generalizability.
+
+## Streamlit App
+
+A Streamlit app is available in this repository to demonstrate the model's predictive capabilities interactively. It allows users to input operational settings and sensor measurements to predict the RUL of an engine.
 
 
-This report presents a predictive maintenance analysis for Remaining Useful Life (RUL) prediction using the NASA Turbofan Engine Degradation Simulation Dataset. The primary objective of this study is to compare the performance of various machine learning models, including Linear Regression, Decision Trees, Random Forests, XGBoost, and LSTM (write full form), for accurate RUL prediction. The dataset was thoroughly explored, followed by data preprocessing techniques such as smoothing and cross-validation. Model performance was evaluated using Mean Absolute Error (MAE), Root Mean Squared Error (RMSE), and R-squared (R²). The results showed that ensemble methods such as Random Forest and XGBoost performed better than other models. The findings highlight the potential of machine learning techniques in predictive maintenance and suggest areas for future improvements in model accuracy and robustness.
-Keywords: Predictive Maintenance, Remaining Useful Life (RUL), NASA Turbofan Engine Dataset, Machine Learning, Linear Regression, Decision Trees, Random Forest, XGBoost, LSTM, Data Preprocessing, Feature Engineering, Time Series Analysis, Multi-variate Analysis, Model Evaluation, MAE, RMSE, R², Model Comparison, Cross-validation, Smoothing Techniques.
+## Repository Structure
+- `app.py`: Streamlit application for interactive RUL prediction.
+- `forest_regression.sav`: Trained RandomForest model for RUL prediction.
+- `data/`: Folder containing dataset files.
+- `notebooks/`: Jupyter notebooks for model training and analysis.
+- `README.md`: Project overview and documentation.
 
-**INTRODUCTION**
+## Keywords
+Predictive Maintenance, Remaining Useful Life (RUL), NASA Turbofan Engine Dataset, Machine Learning, Linear Regression, Decision Trees, Random Forest, XGBoost, LSTM, Data Preprocessing, Feature Engineering, Time Series Analysis, Model Evaluation, Cross-validation, Smoothing Techniques.
 
-2.1 Overview of Predictive Maintenance and RUL Prediction
+---
 
-
-Predictive maintenance leverages data analytics and machine learning to anticipate equipment failures, enabling proactive interventions and minimizing unplanned downtime. Unlike reactive maintenance, which addresses issues post-failure, this strategy optimizes resources and reduces costs. A critical aspect is accurately predicting the Remaining Useful Life (RUL) of equipment, ensuring maintenance is scheduled effectively to maximize performance and avoid unnecessary repairs.
-
-
-2.2 Problem Statement
-
-
-Predict the Remaining Useful Life (RUL) of turbofan engines using time-series data from the NASA Turbofan Engine Degradation Simulation Dataset under varying operational conditions.
-
-
-2.3 Project Objective and Scope
-
-
-The objective of this project is to predict the Remaining Useful Life (RUL) of turbofan engines using the NASA Turbofan Engine Degradation Simulation Dataset. The focus is on assessing the performance of various models, including Linear Regression, XGBoost, and SVR to determine the most effective model for real-world predictive maintenance.
-
-
-Scope:
-
-
-1. Data exploration and preprocessing
-2. Model training for RUL prediction
-3. Model evaluation and comparative analysis
-
-
-2.4 Uniqueness of the project
-
-
-This project uniquely compares a range of models—Linear Regression, Random Forest, XGBoost, and SVR—for predicting Remaining Useful Life (RUL) of turbofan engines using the NASA dataset. Unlike studies focusing on single models, it combines time-series analysis, multivariate analysis, and advanced data preprocessing (smoothing, cross-validation) to enhance prediction accuracy. The practical focus is on real-world applicability, optimizing maintenance schedules, reducing costs, and minimizing downtime.
-
-
-**Dataset Description**
-
-
-Prognostics and health management (PHM) is a critical area in the industry, focusing on predicting the condition of assets to minimize unexpected downtime and failures. Accurate prognostics enable organizations to optimize maintenance schedules, improve safety, and reduce operational costs.
-
-The NASA Turbofan Engine Degradation Simulation Dataset is a publicly available dataset for evaluating various machine learning techniques for RUL prediction. It simulates the performance and degradation of turbofan engines over time, capturing real-world operational complexities.The dataset includes time-series data from multiple engines, encompassing 21 sensor readings and 3 operational settings such as pressure, temperature, and rotational speed. These variables reflect the health status and degradation processes of the engines, enabling robust asset degradation modeling.
-The dataset includes data from five rotating engine components: Fan, LPC, HPC, HPT, and LPT. Key gas path components are HPC, HPT, and LPT. Operational settings include altitude, throttle resolver angle (TRA), and Mach number. The time-series data captures measurements over cycles, simulating engine degradation until failure, making it ideal for Remaining Useful Life (RUL) prediction.
-The primary challenge lies in accurately forecasting the RUL of engines by effectively capturing the complex degradation patterns, while accounting for non-linear sensor behaviour and varying operating conditions across different engines.
-
-
-
-Source- Turbofan Engine Degradation Simulation Dataset
-
-Note- The training, testing and Ground truth values of RUL are already provided in raw form in the train_FD001.txt, test_FD001.txt and RUL_FD001.txt
-
+Explore the potential of machine learning in predictive maintenance and gain insights into effective RUL prediction for turbofan engines.
