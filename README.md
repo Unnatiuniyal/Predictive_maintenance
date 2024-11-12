@@ -8,7 +8,7 @@ Predictive maintenance uses data analytics to forecast equipment failures, helpi
 
 ### Key Objectives
 - Predict the RUL of turbofan engines under varying conditions.
-- Evaluate and compare models, including Linear Regression, Random Forest, XGBoost, and SVR, for RUL prediction.
+- Evaluate and compare models, including Linear Regression, Random Forest,and XGBoost for RUL prediction.
 - Employ data preprocessing techniques, such as smoothing and cross-validation, to enhance model accuracy.
 
 ### Uniqueness of the Project
